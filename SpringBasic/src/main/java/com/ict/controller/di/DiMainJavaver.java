@@ -1,5 +1,7 @@
 package com.ict.controller.di;
 
+import com.ict.controller.di.classfile.Book;
+import com.ict.controller.di.classfile.Library;
 import com.ict.controller.di.classfile.Singer;
 import com.ict.controller.di.classfile.Stage;
 
@@ -15,6 +17,14 @@ public class DiMainJavaver {
 		stage.perform();
 		
 		singer.sing();
+		
+		Book book = new Book();
+		
+		Library library = new Library();
+		
+		library.setBook(book);
+		
+		library.browse();
 
 	}
 
