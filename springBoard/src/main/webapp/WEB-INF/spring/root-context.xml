@@ -30,6 +30,8 @@
 			<property name="dataSource" ref="dataSource"></property>
 		</bean>
 		
+		<!-- com.ict.mapper 패키지 생성후 BoardMapper 인터페이스와 xml파일을 생성 -->
 		<mybatis-spring:scan base-package="com.ict.mapper"/>
+		<mybatis-spring:scan base-package="com.ict.time.mapper"/>
 		
 </beans>
