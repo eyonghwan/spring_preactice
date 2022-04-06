@@ -2,7 +2,7 @@ package com.ict.mapper;
 
 import java.util.List;
 
-import com.ict.vo.BoardVO;
+import com.ict.domain.BoardVO;
 
 public interface BoardMapper {
 	
@@ -13,6 +13,8 @@ public interface BoardMapper {
 	
 	public void insert(BoardVO vo);
 	
-	public BoardVO select(Long bno);
+	public BoardVO select(long bno);
+	
+	public void delete(long bno);
 
 }

@@ -3,20 +3,24 @@
 	"http:/mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ict.mapper.BoardMapper">
-<select id="getList" resultType="com.ict.vo.BoardVO">
-	<![CDATA[
-		SELECT * FROM board_tbl WHERE bno < 4
-	]]>	
-</select>
-
-<insert id="insert">
-	INSERT INTO board_tbl (bno, title, content, writer)
-		VALUES
-	(board_num.nextval, #{title}, #{content}, #{writer})
-</insert>
-
-<select id="select" resultType="com.ict.vo.BoardVO">
-	SELECT * FROM borad_tbl WHERE bno= #{bno}
-</select>
+	<select id="getList" resultType="com.ict.domain.BoardVO">
+		<![CDATA[
+			SELECT * FROM board_tbl ORDER BY bno DESC
+		]]>	
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO board_tbl (bno, title, content, writer)
+			VALUES
+		(board_num.nextval, #{title}, #{content}, #{writer})
+	</insert>
+	
+	<select id="select" resultType="com.ict.domain.BoardVO">
+		SELECT * FROM board_tbl WHERE bno = #{bno}
+	</select>
+	
+	<delete id="delete">
+		DELETE FROM board_tbl WHERE bno=#{bno}
+	</delete>
 
 </mapper>

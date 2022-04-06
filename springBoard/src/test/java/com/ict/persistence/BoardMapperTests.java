@@ -1,13 +1,15 @@
 package com.ict.persistence;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.ict.domain.BoardVO;
 import com.ict.mapper.BoardMapper;
-import com.ict.vo.BoardVO;
 
 import lombok.extern.log4j.Log4j;
 
@@ -19,12 +21,12 @@ public class BoardMapperTests {
 	@Autowired
 	private BoardMapper mapper;
 	
-	@Test
+	//@Test
 	public void testGetList() {
 		log.info(mapper.getList());
 	}
 	
-	@Test
+	//@Test
 	public void testInsert() {
 		
 		BoardVO vo = new BoardVO();
@@ -34,6 +36,20 @@ public class BoardMapperTests {
 		vo.setWriter("새로넣는글쓴이");
 		
 		mapper.insert(vo);
+	}
+	
+	//@Test
+	public void testSelect() {
+		
+		List<BoardVO> vo = mapper.getList();
+		
+		mapper.select(vo.get(1).getBno());
+		
+	}
+	
+	@Test
+	public void testDelete() {
+		mapper.delete(1);
 	}
 	
 }
