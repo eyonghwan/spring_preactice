@@ -16,11 +16,27 @@
 	</insert>
 	
 	<select id="select" resultType="com.ict.domain.BoardVO">
-		SELECT * FROM board_tbl WHERE bno = #{bno}
+		SELECT * FROM board_tbl WHERE bno=#{bno}
 	</select>
 	
 	<delete id="delete">
 		DELETE FROM board_tbl WHERE bno=#{bno}
 	</delete>
 
+	<update id="update">
+		UPDATE board_tbl 
+			SET
+		title=#{title}, content=#{content}, updatedate=SYSDATE 
+			WHERE 
+		bno=#{bno}
+	</update>
+	
+	<update id="update2">
+		UPDATE board_tbl 
+			SET
+		title=#{title}, content=#{content}, updatedate=SYSDATE 
+			WHERE 
+		bno=#{bno}
+	</update>
+	
 </mapper>

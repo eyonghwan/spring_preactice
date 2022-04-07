@@ -47,9 +47,26 @@ public class BoardMapperTests {
 		
 	}
 	
-	@Test
+	//@Test
 	public void testDelete() {
 		mapper.delete(1);
+	}
+	
+	//@Test
+	public void testUpdate() {
+		
+		BoardVO vo = new BoardVO();
+		
+		vo.setTitle("바꾼글");
+		vo.setContent("바꾼 내용");
+		vo.setBno(21);
+		
+		mapper.update(vo);
+	}
+	
+	//@Test
+	public void testUpdate2() {
+		mapper.update2("바꾼글", "바꾼 내용", 41);
 	}
 	
 }

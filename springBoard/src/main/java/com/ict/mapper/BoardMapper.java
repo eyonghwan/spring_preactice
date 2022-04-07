@@ -2,6 +2,8 @@ package com.ict.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.ict.domain.BoardVO;
 
 public interface BoardMapper {
@@ -16,5 +18,9 @@ public interface BoardMapper {
 	public BoardVO select(long bno);
 	
 	public void delete(long bno);
+	
+	public void update(BoardVO vo);
+	
+	public void update2(@Param("title") String title, @Param("content") String content, @Param("bno") long bno);
 
 }
