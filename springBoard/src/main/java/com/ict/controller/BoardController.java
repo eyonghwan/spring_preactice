@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ict.domain.BoardVO;
 import com.ict.mapper.BoardMapper;
@@ -24,9 +25,9 @@ public class BoardController {
 	private BoardMapper mapper;
 	
 	@GetMapping("/boardList")
-	public String getList(Model model) {
+	public String getList(@RequestParam(defaultValue="1", name="pageNum") int pageNum, Model model) {
 		
-		model.addAttribute("boardList", mapper.getList());
+		model.addAttribute("boardList", mapper.getList(pageNum));
 		
 		return "boardList";
 		
@@ -82,9 +83,7 @@ public class BoardController {
 		
 		mapper.update(vo);
 		
-		long bno = vo.getBno();
-		
-		return "redirect:/boardList/"+bno;
+		return "redirect:/boardList/" + vo.getBno();
 	}
 	
 }

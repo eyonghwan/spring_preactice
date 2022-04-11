@@ -11,7 +11,7 @@ public interface BoardMapper {
 	// board_tbl에서 글번호 3번 이하만 조회하는 쿼리문 작성
 	// 어노테이션 이용
 	// @select("SELECT * FROM board_tbl WHERE bno < 4")
-	public List<BoardVO> getList();
+	public List<BoardVO> getList(int pageNum);
 	
 	public void insert(BoardVO vo);
 	
