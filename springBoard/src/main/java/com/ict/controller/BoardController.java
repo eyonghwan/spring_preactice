@@ -8,9 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ict.domain.BoardVO;
+import com.ict.domain.Criteria;
+import com.ict.domain.PageMaker;
 import com.ict.mapper.BoardMapper;
 
 @Controller
@@ -25,9 +26,19 @@ public class BoardController {
 	private BoardMapper mapper;
 	
 	@GetMapping("/boardList")
-	public String getList(@RequestParam(defaultValue="1", name="pageNum") int pageNum, Model model) {
+	// @PathVariable의 경우 defaultValue를 직접 줄 수 없으나, requried=false를 이용해 필수입력을
+	// 안받게 처리한 후 컨트롤러 내부에서 디폴트값을 입력해줄 수 있다.
+	// 기본형 자료는 null을 저장할 수 없기 때문에 wrapper class를 이용해 Long을 선언합니다.
+	// @RequestParam(value="기본값" name="pageNum")
+	public String getList(Criteria cri, Model model) {
 		
-		model.addAttribute("boardList", mapper.getList(pageNum));
+		model.addAttribute("boardList", mapper.getList(cri));
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalBoard(mapper.countPageNum());
+		
+		model.addAttribute("pageMaker", pageMaker);
 		
 		return "boardList";
 		

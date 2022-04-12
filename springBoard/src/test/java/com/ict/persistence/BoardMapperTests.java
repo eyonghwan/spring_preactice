@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ict.domain.BoardVO;
+import com.ict.domain.Criteria;
 import com.ict.mapper.BoardMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -23,7 +24,8 @@ public class BoardMapperTests {
 	
 	//@Test
 	public void testGetList() {
-		log.info(mapper.getList());
+		Criteria cri = new Criteria();
+		log.info(mapper.getList(cri));
 	}
 	
 	//@Test
@@ -40,8 +42,8 @@ public class BoardMapperTests {
 	
 	//@Test
 	public void testSelect() {
-		
-		List<BoardVO> vo = mapper.getList();
+		Criteria cri = new Criteria();
+		List<BoardVO> vo = mapper.getList(cri);
 		
 		mapper.select(vo.get(1).getBno());
 		
@@ -68,5 +70,6 @@ public class BoardMapperTests {
 	public void testUpdate2() {
 		mapper.update2("바꾼글", "바꾼 내용", 41);
 	}
+	
 	
 }

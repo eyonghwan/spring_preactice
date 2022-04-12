@@ -8,10 +8,11 @@
 			SELECT * FROM(
 				SELECT
 				/*+ INDEX_DESC(board_tbl pk_board) */
-				rownum rn, board_tbl.* from board_tbl WHERE rownum <= (#{pageNum}*10))
-				    WHERE rn > ((#{pageNum}-1)*10)
+				rownum rn, board_tbl.* from board_tbl WHERE rownum <= #{pageEnd})
+				    WHERE rn > #{pageStart}
 		]]>	
 	</select>
+	<!-- getter 맨 앞글자는 소문자 -->
 	
 	<insert id="insert">
 		INSERT INTO board_tbl (bno, title, content, writer)
@@ -42,5 +43,9 @@
 			WHERE 
 		bno=#{bno}
 	</update>
+	
+	<select id="countPageNum" resultType="int">
+		SELECT count(bno) FROM board_tbl WHERE bno > 0
+	</select>
 	
 </mapper>
