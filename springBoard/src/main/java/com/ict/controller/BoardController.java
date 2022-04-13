@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.ict.domain.BoardVO;
 import com.ict.domain.Criteria;
 import com.ict.domain.PageMaker;
+import com.ict.domain.SearchCriteria;
 import com.ict.mapper.BoardMapper;
+import com.ict.service.BoardService;
 
 @Controller
 public class BoardController {
@@ -23,20 +25,20 @@ public class BoardController {
 	// 그러면, 그 메서드를 보유하고 있는 클래스를 선언하고 주입해줘야 합니다.
 	
 	@Autowired
-	private BoardMapper mapper;
+	private BoardService service;
 	
 	@GetMapping("/boardList")
 	// @PathVariable의 경우 defaultValue를 직접 줄 수 없으나, requried=false를 이용해 필수입력을
 	// 안받게 처리한 후 컨트롤러 내부에서 디폴트값을 입력해줄 수 있다.
 	// 기본형 자료는 null을 저장할 수 없기 때문에 wrapper class를 이용해 Long을 선언합니다.
 	// @RequestParam(value="기본값" name="pageNum")
-	public String getList(Criteria cri, Model model) {
+	public String getList(SearchCriteria cri, Model model) {
 		
-		model.addAttribute("boardList", mapper.getList(cri));
+		model.addAttribute("boardList", service.getList(cri));
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalBoard(mapper.countPageNum());
+		pageMaker.setTotalBoard(service.countPageNum());
 		
 		model.addAttribute("pageMaker", pageMaker);
 		
@@ -45,9 +47,15 @@ public class BoardController {
 	}
 	
 	@GetMapping("/boardList/{bno}")
-	public String getBoardDetail(@PathVariable long bno, Model model) {
+	public String getBoardDetail(@PathVariable long bno, SearchCriteria cri, Model model) {
 		
-		model.addAttribute("board", mapper.select(bno));
+		model.addAttribute("board", service.select(bno));
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalBoard(service.countPageNum());
+		
+		model.addAttribute("pageMaker", pageMaker);
 		
 		return "boardDetail";
 	}
@@ -62,19 +70,19 @@ public class BoardController {
 	}
 		
 	@PostMapping("/boardInsert")
-	public String boardInsert(BoardVO boardvo, Model model) {
+	public String boardInsert(BoardVO vo, Model model) {
 			
-		log.info("들어온 데이터 디버깅 : " + boardvo);
+		log.info("들어온 데이터 디버깅 : " + vo);
 			
-		mapper.insert(boardvo);
+		service.insert(vo);
 			
-		return "redirect:/boardList";
+		return "redirect:/boardList/";
 	}
 		
 	@PostMapping("/boardDelete")
 	public String boardDelete(long bno) {
 		
-		mapper.delete(bno);
+		service.delete(bno);
 			
 		return "redirect:/boardList";
 	}
@@ -82,7 +90,7 @@ public class BoardController {
 	@PostMapping("/boardUpdateForm")
 	public String boardUpdateForm(long bno, Model model) {
 		
-		BoardVO boardvo = mapper.select(bno);
+		BoardVO boardvo = service.select(bno);
 		
 		model.addAttribute("board", boardvo);
 		
@@ -92,7 +100,7 @@ public class BoardController {
 	@PostMapping("/boardUpdate")
 	public String boardUpdate(BoardVO vo, Model model) {
 		
-		mapper.update(vo);
+		service.update(vo);
 		
 		return "redirect:/boardList/" + vo.getBno();
 	}

@@ -11,7 +11,7 @@ public class PageMaker {
 	private int endPage;
 	private boolean prev;
 	private boolean next;
-	private Criteria cri;
+	private SearchCriteria cri;
 	
 	public void calcData() {
 		this.displayPageNum = 10;

@@ -26,7 +26,7 @@
 				<c:forEach var="board" items="${boardList }">
 					<tr>
 			    <td>${board.bno }</td>
-			    <td><a href="/boardList/${board.bno }">${board.title }</a></td>
+			    <td><a href="/boardList/${board.bno }?searchType=${pageMaker.cri.searchType}&keyword=${pageMaker.cri.keyword}">${board.title }</a></td>
 			    <td>${board.writer }</td>
 			    <td>${board.regdate }</td>
 			    <td>${board.updatedate }</td>
@@ -38,18 +38,57 @@
 		
 		<a href="/boardInsert">글쓰기</a><br/>
 		
+		<!-- 검색창 -->
+		<form action="/boardList" method="get">
+			<select name="searchType">
+					<option value="n" selected>
+					-
+					</option>
+					<option value="t" ${pageMaker.cri.searchType eq 't' ? 'selected' : '' }>
+					제목
+					</option>
+					<option value="c" ${pageMaker.cri.searchType eq 'c' ? 'selected' : '' }>
+					본문
+					</option>
+					<option value="w" ${pageMaker.cri.searchType eq 'w' ? 'selected' : '' }>
+					글쓴이
+					</option>
+					<option value="tc" ${pageMaker.cri.searchType eq 'tc' ? 'selected' : '' }>
+					제목 + 본문
+					</option>
+					<option value="cw" ${pageMaker.cri.searchType eq 'cw' ? 'selected' : '' }>
+					본문 + 글쓴이
+					</option>
+					<option value="tcw" ${pageMaker.cri.searchType eq 'tcw' ? 'selected' : '' }>
+					제목 + 본문 + 글쓴이
+					</option>
+			</select>
+			<input type="text" name="keyword" placeholder="검색어" value="${pageMaker.cri.keyword }">
+			<input type="submit" value="검색">
+		</form>
+		
 			<ul class="pagination justify-content-center">
 				<c:if test="${pageMaker.prev }">
-			    	<li class="page-item"><a class="page-link" href="/boardList?pageNum=${pageMaker.startPage-1}">&laquo;</a></li>
+			    	<li class="page-item">
+			    		<a class="page-link" 
+			    		href="/boardList?pageNum=${pageMaker.startPage-1}&searchType=${pageMaker.cri.searchType}&keyword=${pageMaker.cri.keyword}">
+			    		&laquo;</a>
+			    	</li>
 			 	</c:if>
 			 	<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="idx">
-			    	<li class="page-item${pageMaker.cri.pageNum eq idx ? ' active' : '' }"><a class="page-link" href="/boardList?pageNum=${idx }">${idx }</a></li>
+			    	<li class="page-item${pageMaker.cri.pageNum eq idx ? ' active' : '' }">
+			    		<a class="page-link" 
+			    		href="/boardList?pageNum=${idx }&searchType=${pageMaker.cri.searchType}&keyword=${pageMaker.cri.keyword}">${idx }</a>
+			    	</li>
 			    </c:forEach>
 			    <c:if test="${pageMaker.next }">
-			    	<li class="page-item"><a class="page-link" href="/boardList?pageNum=${pageMaker.endPage+1}">&raquo;</a></li>
+			    	<li class="page-item">
+			    		<a class="page-link" 
+			    		href="/boardList?pageNum=${pageMaker.endPage+1}&searchType=${pageMaker.cri.searchType}&keyword=${pageMaker.cri.keyword}">
+			    		&raquo;</a>
+			    	</li>
 			    </c:if>
 			</ul>
-		
-		</div>
+	</div>
 </body>
 </html>
