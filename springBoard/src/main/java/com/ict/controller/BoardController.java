@@ -38,7 +38,7 @@ public class BoardController {
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalBoard(service.countPageNum());
+		pageMaker.setTotalBoard(service.countPageNum(cri));
 		
 		model.addAttribute("pageMaker", pageMaker);
 		
@@ -53,7 +53,7 @@ public class BoardController {
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalBoard(service.countPageNum());
+		pageMaker.setTotalBoard(service.countPageNum(cri));
 		
 		model.addAttribute("pageMaker", pageMaker);
 		
@@ -88,21 +88,33 @@ public class BoardController {
 	}
 	
 	@PostMapping("/boardUpdateForm")
-	public String boardUpdateForm(long bno, Model model) {
+	public String boardUpdateForm(long bno, SearchCriteria cri, Model model) {
 		
 		BoardVO boardvo = service.select(bno);
 		
 		model.addAttribute("board", boardvo);
 		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalBoard(service.countPageNum(cri));
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
 		return "boardUpdateForm";
 	}
 	
 	@PostMapping("/boardUpdate")
-	public String boardUpdate(BoardVO vo, Model model) {
+	public String boardUpdate(BoardVO vo, SearchCriteria cri, Model model) {
 		
 		service.update(vo);
 		
-		return "redirect:/boardList/" + vo.getBno();
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalBoard(service.countPageNum(cri));
+		
+		model.addAttribute("pageMaker", pageMaker);
+		log.info(cri.getKeyword());
+		return "redirect:/boardList/" + vo.getBno() + "?pageNum=" + cri.getPageNum() + "&searchType=" + cri.getSearchType() + "&keyword=" + cri.getKeyword();
 	}
 	
 }

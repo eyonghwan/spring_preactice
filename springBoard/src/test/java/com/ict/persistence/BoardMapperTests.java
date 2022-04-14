@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ict.domain.BoardVO;
 import com.ict.domain.Criteria;
+import com.ict.domain.SearchCriteria;
 import com.ict.mapper.BoardMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -24,8 +25,8 @@ public class BoardMapperTests {
 	
 	//@Test
 	public void testGetList() {
-		Criteria cri = new Criteria();
-		log.info(mapper.getList(cri));
+		//Criteria cri = new Criteria();
+		//log.info(mapper.getList(cri));
 	}
 	
 	//@Test
@@ -42,10 +43,10 @@ public class BoardMapperTests {
 	
 	//@Test
 	public void testSelect() {
-		Criteria cri = new Criteria();
-		List<BoardVO> vo = mapper.getList(cri);
+		//Criteria cri = new Criteria();
+		//List<BoardVO> vo = mapper.getList(cri);
 		
-		mapper.select(vo.get(1).getBno());
+		//mapper.select(vo.get(1).getBno());
 		
 	}
 	
@@ -71,5 +72,13 @@ public class BoardMapperTests {
 		mapper.update2("바꾼글", "바꾼 내용", 41);
 	}
 	
+	@Test
+	public void testSearchGetList() {
+		SearchCriteria cri = new SearchCriteria();
+		cri.setKeyword("테스트");
+		cri.setSearchType("w");
+		
+		mapper.getList(cri);
+	}
 	
 }

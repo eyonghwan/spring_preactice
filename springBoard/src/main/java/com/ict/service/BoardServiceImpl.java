@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ict.domain.BoardVO;
 import com.ict.domain.Criteria;
+import com.ict.domain.SearchCriteria;
 import com.ict.mapper.BoardMapper;
 
 // BoardService 인터페이스 구현
@@ -18,13 +19,13 @@ public class BoardServiceImpl implements BoardService {
 	private BoardMapper mapper;
 
 	@Override
-	public List<BoardVO> getList(Criteria cri) {
+	public List<BoardVO> getList(SearchCriteria cri) {
 		return mapper.getList(cri);
 	}
 
 	@Override
-	public int countPageNum() {
-		return mapper.countPageNum();
+	public int countPageNum(SearchCriteria cri) {
+		return mapper.countPageNum(cri);
 	}
 
 	@Override

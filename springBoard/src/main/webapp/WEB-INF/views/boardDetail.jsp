@@ -13,7 +13,7 @@
 	글쓴이 : ${board.writer }<br/>
 	글 내용 : ${board.content }<br/>
 	
-	<a href="/boardList?searchType=${pageMaker.cri.searchType}&keyword=${pageMaker.cri.keyword}">글 목록가기</a>
+	<a href="/boardList?pageNum=${pageMaker.cri.pageNum }&searchType=${pageMaker.cri.searchType}&keyword=${pageMaker.cri.keyword}">글 목록가기</a>
 	
 	<form action="/boardDelete" method="post">
 		<input type="hidden" value="${board.bno }" name="bno">
@@ -22,6 +22,9 @@
 	
 	<form action="/boardUpdateForm" method="post">
 		<input type="hidden" value="${board.bno }" name="bno">
+		<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
+		<input type="hidden" name="searchType" value="${pageMaker.cri.searchType }">
+		<input type="hidden" name="keyword" value="${pageMaker.cri.keyword }">
 		<input type="submit" value="수정">
 	</form>
 
