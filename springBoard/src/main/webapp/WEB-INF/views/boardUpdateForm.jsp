@@ -13,9 +13,9 @@
 		<input type="text" name="writer" value="${board.writer }" readonly><br/>
 		<textarea name="content" rows="20" cols="100">${board.content }</textarea><br/>
 		<input type="hidden" name="bno" value="${board.bno }">
-		<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
-		<input type="hidden" name="searchType" value="${pageMaker.cri.searchType }">
-		<input type="hidden" name="keyword" value="${pageMaker.cri.keyword }">
+		<input type="hidden" name="pageNum" value="${cri.pageNum }">
+		<input type="hidden" name="searchType" value="${cri.searchType }">
+		<input type="hidden" name="keyword" value="${cri.keyword }">
 		<input type="submit" value="수정">
 	</form>
 	

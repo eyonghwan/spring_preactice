@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ict.domain.BoardVO;
 import com.ict.domain.Criteria;
@@ -51,11 +52,7 @@ public class BoardController {
 		
 		model.addAttribute("board", service.select(bno));
 		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.setTotalBoard(service.countPageNum(cri));
-		
-		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("cri", cri);
 		
 		return "boardDetail";
 	}
@@ -80,10 +77,14 @@ public class BoardController {
 	}
 		
 	@PostMapping("/boardDelete")
-	public String boardDelete(long bno) {
+	public String boardDelete(long bno, SearchCriteria cri, RedirectAttributes rttr) {
 		
 		service.delete(bno);
 			
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("searchType", cri.getSearchType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		
 		return "redirect:/boardList";
 	}
 	
@@ -94,27 +95,21 @@ public class BoardController {
 		
 		model.addAttribute("board", boardvo);
 		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.setTotalBoard(service.countPageNum(cri));
-		
-		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("cri", cri);
 		
 		return "boardUpdateForm";
 	}
 	
 	@PostMapping("/boardUpdate")
-	public String boardUpdate(BoardVO vo, SearchCriteria cri, Model model) {
+	public String boardUpdate(BoardVO vo, SearchCriteria cri, RedirectAttributes rttr) {
 		
 		service.update(vo);
 		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.setTotalBoard(service.countPageNum(cri));
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("searchType", cri.getSearchType());
+		rttr.addAttribute("keyword", cri.getKeyword());
 		
-		model.addAttribute("pageMaker", pageMaker);
-		log.info(cri.getKeyword());
-		return "redirect:/boardList/" + vo.getBno() + "?pageNum=" + cri.getPageNum() + "&searchType=" + cri.getSearchType() + "&keyword=" + cri.getKeyword();
+		return "redirect:/boardList/" + vo.getBno();
 	}
 	
 }

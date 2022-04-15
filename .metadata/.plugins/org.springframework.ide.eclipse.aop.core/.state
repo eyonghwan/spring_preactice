@@ -2,4 +2,5 @@
 <aop-reference-model>
 <aop-project name="springBoard"/>
 <aop-project name="SpringBasic"/>
+<aop-project name="prj_rest"/>
 </aop-reference-model>
