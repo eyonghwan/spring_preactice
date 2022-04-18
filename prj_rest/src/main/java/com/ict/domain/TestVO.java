@@ -6,6 +6,6 @@ import lombok.Data;
 public class TestVO {
 
 	private Integer mno;
-	private String Name;
+	private String name;
 	private Integer age;
 }
