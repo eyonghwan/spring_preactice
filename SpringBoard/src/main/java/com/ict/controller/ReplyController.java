@@ -6,17 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ict.domain.ReplyVO;
 import com.ict.service.ReplyService;
 
+import lombok.extern.log4j.Log4j;
+
 @RestController
+@Log4j
 @RequestMapping("/replies")
 public class ReplyController {
 
@@ -58,12 +63,51 @@ public class ReplyController {
 		ResponseEntity<List<ReplyVO>> entity = null;
 		
 		try {
-			entity = new ResponseEntity<>(
-						service.listReply(bno), HttpStatus.OK);
+			entity = new ResponseEntity<>(service.listReply(bno), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		return entity;
+	}
+	
+	// 일반 방식이 아닌 rest방식에서는 삭제로직 post가 아닌
+	// delete 방식으로 요청하기 때문에 @DeleteMappnig 을 씁니다.
+	@DeleteMapping(value="/{rno}", produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> remove(@PathVariable("rno") Long rno) {
+		
+		ResponseEntity<String> entity = null;
+		
+		try {
+			
+			service.removeReply(rno);
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			
+		} catch(Exception e) {
+			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	
+	@RequestMapping(method = {RequestMethod.PUT, RequestMethod.PATCH}, 
+					value="/{rno}", 
+					consumes="application/json", 
+					produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> modify (@RequestBody ReplyVO vo, @PathVariable("rno") Long rno) {
+		
+		ResponseEntity<String> entity = null;
+		try {
+			log.info("세팅 전 vo : " + vo);
+			vo.setRno(rno);
+			log.info("세팅 후 vo : " + vo);
+			service.modifyReply(vo);
+			
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+		} catch(Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
 		return entity;
 	}
 	
