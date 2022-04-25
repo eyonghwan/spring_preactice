@@ -8,12 +8,17 @@
 </head>
 <body>
 
-	<div>	
+	<button id="button">댓글 보기</button>
+	<ul id="replies">
+	
+	</ul>
+
+	<div id = "ReplyFrom">	
 		<div>
 			REPLYER <input type="text" name="replyer" id="newReplyer">
 		</div>
 		<div>
-			REPLY TEXT <input type="text" name="reply" id="newReply">
+			REPLY <input type="text" name="reply" id="newReply">
 		</div>
 		<button id="replyAddBtn">ADD REPLY</button>
 	</div>
@@ -46,10 +51,44 @@
 			success : function(result) {
 				if(result == 'SUCCESS') {
 					alert("등록 되었습니다.");
+					getAllList();
+					$("#newReplyer").val("");
+					$("#newReply").val("");
 				}
 			}
 		});
 	});
+	
+	function getAllList() {
+		$.getJSON("/replies/all/" + bno, function(data){
+			
+			let str = "";
+			console.log(data);
+			
+			$(data).each(
+				function() {
+					str += "<li data-rno='" + this.rno + "' class='replyLi'>"
+						+ this.rno + ":" + this.reply
+						+ "<button>수정/삭제</button></li>";
+				});
+			$("#replies").html(str);
+		});
+	}
+	
+	
+	$("#button").on("click", function() {
+	getAllList();
+	});
+	
+	$("#replies").on("click", ".replyLi button", function() {
+		let replytag = $(this).parent();
+		
+		let rno = replytag.attr("data-rno");
+		let reply = replytag.text();
+		
+		alert(rno + " : " + reply);
+	})
+	
 	</script>
 </body>
 </html>
