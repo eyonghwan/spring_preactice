@@ -56,15 +56,20 @@
 		</div>
 	</div>
 	
-	<div id = "ReplyFrom">	
-		<div>
-			REPLYER <input type="text" name="replyer" id="newReplyer">
-		</div>
-		<div>
-			REPLY <input type="text" name="reply" id="newReply">
-		</div>
-		<button id="replyAddBtn">ADD REPLY</button>
-	</div>
+	<div class="row box-box-success">
+		<div class="box-header">
+			<h2 class="text-primary">댓글 작성</h2>
+		</div><!-- header -->
+		<div class="box-body">	
+			<strong>Writer</strong>
+			<input type="text" id="newReplyer" placeholder="Replyer" class="form-control"/>
+			<strong>Reply</strong>
+			<input type="text" id="newReply" placeholder="Reply" class="form-control"/>
+		</div><!-- body -->
+		<div class="box-footer">
+			<button type="button" class="btn btn-success" id="replyAddBtn">ADD REPLY</button>
+		</div><!-- footer -->
+	</div><!-- row -->
 	
 	<div id="modDiv" style="display:none;">
 		<div class="modal-title"></div>
@@ -175,8 +180,8 @@
 										+ "/" + (date.getMonth() + 1)
 										+ "/" + date.getDate()
 										+ "-" + date.getHours()
-										+ "-" + date.getMinutes()
-										+ "-" + date.getSeconds();
+										+ ":" + date.getMinutes()
+										+ ":" + date.getSeconds();
 					
 					str += "<div data-rno='" + this.rno + "' class='replyLi'><strong>@"
 						+ this.replyer + "</strong> - " + formattedTime + "<br/>"
@@ -197,7 +202,9 @@
 		let replytag = $(this).parent();
 		
 		let rno = replytag.attr("data-rno");
-		let reply = $(this).prev().text();
+		// let reply = $(this).prev().text();
+		let reply = $(this).siblings(".reply").text();
+		// let reply = $(this).parent().children(".reply").text();
 		
 		$(".modal-title").html(rno);
 		$("#reply").val(reply);
