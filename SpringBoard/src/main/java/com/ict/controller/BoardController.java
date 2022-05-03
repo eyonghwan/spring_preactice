@@ -1,5 +1,7 @@
 package com.ict.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,12 @@ import com.ict.domain.SearchCriteria;
 import com.ict.mapper.BoardMapper;
 import com.ict.service.BoardService;
 
+import lombok.extern.log4j.Log4j;
+
 @Controller
+@Log4j
 public class BoardController {
 
-	private static final Logger log = LoggerFactory.getLogger(HomeController.class);
-	
 	// 전체 회원을 보려면, 회원목록을 들고오는 메서드를 실행해야 하고
 	// 그러면, 그 메서드를 보유하고 있는 클래스를 선언하고 주입해줘야 합니다.
 	
@@ -35,7 +38,9 @@ public class BoardController {
 	// @RequestParam(value="기본값" name="pageNum")
 	public String getList(SearchCriteria cri, Model model) {
 		
-		model.addAttribute("boardList", service.getList(cri));
+		List<BoardVO> boardList = service.getList(cri);
+		
+		model.addAttribute("boardList", boardList);
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
