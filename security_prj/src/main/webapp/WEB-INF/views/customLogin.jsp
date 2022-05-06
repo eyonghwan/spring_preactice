@@ -12,9 +12,10 @@
 	<h2>${error }</h2>
 	<h2>${logout }</h2>
 	
-	<form action="/login" method='post'>
+	<form action="/login" method="post">
 		아이디 : <input type="text" name="username" value="admin"><br/>
-		비밀번호 : <input type="text" name="password" value="admin"><br/>
+		비밀번호 : <input type="password" name="password" value="admin"><br/>
+		자동로그인 : <input type="checkbox" name="remember-me"><br/>
 		<input type="submit" value="로그인하기" />
 		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
 	</form>
