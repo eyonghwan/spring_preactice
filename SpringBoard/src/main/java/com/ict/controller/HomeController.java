@@ -52,4 +52,9 @@ public class HomeController {
 		
 	}
 	
+	@GetMapping("/pay")
+	public void pay() {
+		
+	}
+	
 }
