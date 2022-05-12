@@ -26,5 +26,8 @@ public interface BoardMapper {
 	public void update2(@Param("title") String title, @Param("content") String content, @Param("bno") long bno);
 	
 	public int countPageNum(SearchCriteria cri);
+	
+	public void updateReplyCount(@Param("bno") Long bno,
+							  @Param("amount") int amount);
 
 }
