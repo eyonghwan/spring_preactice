@@ -108,14 +108,27 @@
 				$(uploadResultArr).each(function(i, obj) {
 					
 					if(!obj.image) {
-						str += "<li><img src='/resources/attachment_87543.png'>"
-							+ obj.fileName + "</li>";
+						
+						let fileCallPath = encodingURIComponent (
+								obj.uploadPath + "/" +
+								obj.uuid + "_" + obj.fileName);
+						
+						str += "<li>" + fileCallPath + 
+								"'>" + "<img src='/resources/attachicon.png'>" + 
+								obj.fileName + "</a>" +
+								"<span data-file=\'" + fileCallPath + "\' data-type='file'> X </span>" +
+								"</li>";
+							
 					} else {
 						
 						let fileCallPath = encodeURIComponent(obj.uploadPath + "\s_" +
 															ogj.uuid + "_" + obj.fileName);
 						
-						str += "<li><img src='\display?fileName=" + fileCallPath + "'></li>";
+						str += "<li><a href='/download?fileName=" + fileCallPath +
+								"'>" + "<img src='\display?fileName=" + fileCallPath + 
+								"'>" + obj.fileName + "</a>" +
+								"<span data-file=\'" + fileCallPath + "\' data-type='image'> X </span>" +
+								"</li>";
 					}
 					
 				});
@@ -123,7 +136,26 @@
 				uploadResult.append(str);
 			}// showUploadedFile
 			
-		});
+			$(".uploadResult").on("cilck", "span", function(e) {
+				let tergetFile = $(this).data("file");
+				let type = $(this).data("type");
+				
+				let targetLi = $(this).colsest("li");
+				
+				$.ajax({
+					url: '/deleteFile',
+					data: {fileName: targetFile, type:type},
+					dataType: 'text',
+					type: 'POST',
+					success: function(result) {
+						alert(result);
+						targetLi.remove();
+					}
+				}); // ajax
+				
+			}); // click span
+			
+		});// document
 	
 	</script>
 
