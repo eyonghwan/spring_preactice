@@ -113,22 +113,26 @@
 								obj.uploadPath + "/" +
 								obj.uuid + "_" + obj.fileName);
 						
-						str += "<li>" + fileCallPath + 
-								"'>" + "<img src='/resources/attachicon.png'>" + 
-								obj.fileName + "</a>" +
-								"<span data-file=\'" + fileCallPath + "\' data-type='file'> X </span>" +
-								"</li>";
+						str += "<li data-path = '" + obj.uploadPath + "' data-uuid='" + obj.uuid
+							+ "' data-filename='" + obj.fileName + "' data-type='" + obj.fileType
+							+ "'><a href='/download?fileName=" + fileCallPath
+							+ "'>" + "<img src='/resources/attachicon.png'>"
+							+ obj.fileName + "</a>"
+							+ "<span data-file=\'" + fileCallPath + "\' data-type='file'> X </span>"
+							+ "</li>";
 							
 					} else {
 						
 						let fileCallPath = encodeURIComponent(obj.uploadPath + "\s_" +
 															ogj.uuid + "_" + obj.fileName);
-						
-						str += "<li><a href='/download?fileName=" + fileCallPath +
-								"'>" + "<img src='\display?fileName=" + fileCallPath + 
-								"'>" + obj.fileName + "</a>" +
-								"<span data-file=\'" + fileCallPath + "\' data-type='image'> X </span>" +
-								"</li>";
+						console.log("파일경로: " + fileCallPath);
+						str += "<li data-path = '" + obj.uploadPath + "' data-uuid='" + obj.uuid
+							+ "' data-filename='" + obj.fileName + "' data-type='" + obj.fileType
+							+ "'> <a href='/download?fileName=" + fileCallPath
+							+ "'> <img src='/download?fileName=" + fileCallPath
+							+ "'/>" + obj.fileName + "</a>"
+							+ "<span data-file=\'" + fileCallPath + "\' data-type='file'> X </span>"
+							+ "</li>";
 					}
 					
 				});
