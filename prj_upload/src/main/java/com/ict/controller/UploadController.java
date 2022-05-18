@@ -2,6 +2,7 @@ package com.ict.controller;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
@@ -125,6 +126,8 @@ public class UploadController {
 			
 			log.info("only file name : " + uploadFileName);
 			
+			attachDTO.setFileName(uploadFileName);
+			
 			// uuid 발급
 			UUID uuid = UUID.randomUUID();
 			
@@ -143,8 +146,7 @@ public class UploadController {
 					FileOutputStream thumbnail = new FileOutputStream(
 									new File(uploadPath, "s_" + uploadFileName));
 					
-					Thumbnailator.createThumbnail(
-							multipartFile.getInputStream(), thumbnail, 100, 100);
+					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100, 100);
 					thumbnail.close();
 				}
 				list.add(attachDTO);
@@ -161,7 +163,7 @@ public class UploadController {
 	@ResponseBody
 	public ResponseEntity<byte[]> getFile(String fileName) {
 		
-		log.info("fileNAme: " + fileName);
+		log.info("fileName: " + fileName);
 		
 		File file = new File("c:\\upload_data\\temp\\" + fileName);
 		
@@ -174,10 +176,8 @@ public class UploadController {
 			
 			header.add("Content-Type", Files.probeContentType(file.toPath()));
 			
-			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file),
-											header,
-											HttpStatus.OK);
-		} catch (Exception e) {
+			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		

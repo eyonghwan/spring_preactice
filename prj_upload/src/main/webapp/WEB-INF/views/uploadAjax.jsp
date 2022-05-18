@@ -21,6 +21,10 @@
 	.uploadResult ul li img {
 		width: 20px;
 	}
+	
+	.uploadResult ul li span {
+	cursor : pointer;
+	}
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -46,7 +50,7 @@
 	<script>
 		$(document).ready(function() {
 			
-			let regex = new RefExp("(.*?)\.(exe|sh|zip|alz)$");
+			let regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
 			let maxSize = 5242880; // 5MB
 			
 			function checkExtension(fileName, fileSize) {
@@ -76,15 +80,15 @@
 				
 				// 파일 데이터를 폼에 집어넣기
 				for(let i = 0; i < files.length; i++) {
-					if(!checkExtension(file[i].name, files[i].size)) {
+					if(!checkExtension(files[i].name, files[i].size)) {
 						return false;
 					}
-					formDAta.append("uploadFile", files[i]);
+					formData.append("uploadFile", files[i]);
 				}
 				
 				$.ajax({
 					url: '/uploadAjax',
-					processDAta: false,
+					processData: false,
 					contentType: false,
 					data: formData,
 					type: 'POST',
@@ -92,14 +96,14 @@
 					success: function(result) {
 						alert("Uploaded");
 						
-						ShowUploadedFile(result);
+						showUploadedFile(result);
 						
 						$(".uploadDiv").html(cloneObj.html());
 					}
 				}); // ajax
 			});// onclick uploadBtn
 			
-			let uploadtResult = $(".uploadResult ul");
+			let uploadResult = $(".uploadResult ul");
 			
 			function showUploadedFile(uploadResultArr) {
 				
@@ -109,9 +113,7 @@
 					
 					if(!obj.image) {
 						
-						let fileCallPath = encodingURIComponent (
-								obj.uploadPath + "/" +
-								obj.uuid + "_" + obj.fileName);
+						let fileCallPath = encodingURIComponent (obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
 						
 						str += "<li data-path = '" + obj.uploadPath + "' data-uuid='" + obj.uuid
 							+ "' data-filename='" + obj.fileName + "' data-type='" + obj.fileType
@@ -123,15 +125,17 @@
 							
 					} else {
 						
-						let fileCallPath = encodeURIComponent(obj.uploadPath + "\s_" +
-															ogj.uuid + "_" + obj.fileName);
-						console.log("파일경로: " + fileCallPath);
+						let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+						let fileCallPathOriginal = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
+						
+						console.log("파일경로: " + fileCallPathOriginal);
+						
 						str += "<li data-path = '" + obj.uploadPath + "' data-uuid='" + obj.uuid
 							+ "' data-filename='" + obj.fileName + "' data-type='" + obj.fileType
-							+ "'> <a href='/download?fileName=" + fileCallPath
-							+ "'> <img src='/download?fileName=" + fileCallPath
+							+ "'> <a href='/download?fileName=" + fileCallPathOriginal
+							+ "'> <img src='/display?fileName=" + fileCallPath
 							+ "'/>" + obj.fileName + "</a>"
-							+ "<span data-file=\'" + fileCallPath + "\' data-type='file'> X </span>"
+							+ "<span data-file=\'" + fileCallPath + "\' data-type='image'> X </span>"
 							+ "</li>";
 					}
 					
@@ -140,11 +144,14 @@
 				uploadResult.append(str);
 			}// showUploadedFile
 			
-			$(".uploadResult").on("cilck", "span", function(e) {
-				let tergetFile = $(this).data("file");
+			$(".uploadResult").on("click", "span", function(e) {
+				let targetFile = $(this).data("file");
 				let type = $(this).data("type");
 				
-				let targetLi = $(this).colsest("li");
+				console.log(targetFile);
+				console.log(type);
+				
+				let targetLi = $(this).closest("li");
 				
 				$.ajax({
 					url: '/deleteFile',
