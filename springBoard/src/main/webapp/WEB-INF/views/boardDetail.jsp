@@ -4,6 +4,25 @@
 <html>
 <head>
 <style>
+
+	.uploadResult {
+		width:100%;
+		background-color: gray;
+	}
+	.uploadResult ul {
+		display:flex;
+		flex-flow:row;
+		justify-content: center;
+		align-items: center;
+	}
+	.uploadResult ul li {
+		list-style: none;
+		padding: 10px;
+	}
+	.uploadResult ul li img {
+		width: 20px;
+	}
+	
 	#modDiv {
 		width: 300px;
 		height: 100px;
@@ -29,6 +48,15 @@
 	글 제목 : ${board.title }<br/>
 	글쓴이 : ${board.writer }<br/>
 	글 내용 : ${board.content }<br/>
+	
+	<div class="row">
+		<h3 class="text-primary">첨부파일</h3>
+		<div id="uploadResult">
+			<ul>
+				<!-- 첨부파일이 들어갈 위치 -->
+			</ul>
+		</div>
+	</div><!-- row -->
 	
 	<a href="/boardList?pageNum=${cri.pageNum }&searchType=${cri.searchType}&keyword=${cri.keyword}">글 목록가기</a>
 	
@@ -214,6 +242,47 @@
 	$("#closeBtn").on("click", () => {
 		$("#modDiv").hide();
 	});
+	
+	(function() {
+		
+		$.getJSON("/getAttachList", {bno: bno}, function(arr) {
+			console.log(arr);
+			
+			let str = "";
+			
+			$(arr).each(function(i, attach){
+				
+				if(attach.fileType) {
+					let fileCallPath = encodeURIComponent(attach.uploadPath + "/s_" + attach.uuid + "_" + attach.fileName);
+				
+					str += "<li data-path='" + attach.uploadPath
+						+ "' data-uuid='" + attach.uuid
+						+ "' data-filename='" + attach.fileName
+						+ "' data-type='" + attach.fileType + "' ><div>"
+						+ "<img src='/display?fileName=" + fileCallPath +"'>'"
+						+ "</div> </li>"
+				} else {
+					str += "<li data-path='" + attach.uploadPath
+					+ "' data-uuid='" + attach.uuid
+					+ "' data-filename='" + attach.fileName
+					+ "' data-type='" + attach.fileType + "' ><div>"
+					+ "<img src='/resources/attachicon.png' width='100px' height='100px'>"
+					+ "</div> </li>"
+				}
+			});
+			$("#uploadResult ul").html(str);
+		}); // end getJSON
+	})(); // end anonymous
+	
+	$("#uploadResult").on("click", "li", function(e){
+		
+		let liObj = $(this);
+		
+		let path = encodeURIComponent(liObj.data("path") + "/" + liObj.data("uuid") + "_" + liObj.data("filename"));
+		
+		self.location = "/download?fileName=" + path;
+	});
+	
 	
 	</script>
 

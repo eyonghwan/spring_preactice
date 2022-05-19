@@ -5,13 +5,18 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ict.domain.BoardAttachVO;
 import com.ict.domain.BoardVO;
 import com.ict.domain.Criteria;
 import com.ict.domain.PageMaker;
@@ -77,6 +82,12 @@ public class BoardController {
 		log.info("들어온 데이터 디버깅 : " + vo);
 			
 		service.insert(vo);
+		
+		log.info("=============");
+		log.info("게시글 등록 : " + vo);
+		if(vo.getAttachList() != null) {
+			vo.getAttachList().forEach(attach -> log.info(attach));
+		}
 			
 		return "redirect:/boardList/";
 	}
@@ -115,6 +126,13 @@ public class BoardController {
 		rttr.addAttribute("keyword", cri.getKeyword());
 		
 		return "redirect:/boardList/" + vo.getBno();
+	}
+	
+	@GetMapping(value="/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<BoardAttachVO>> getAttacchList(Long bno) {
+		
+		return new ResponseEntity<>(service.getAttachList(bno), HttpStatus.OK);
 	}
 	
 }

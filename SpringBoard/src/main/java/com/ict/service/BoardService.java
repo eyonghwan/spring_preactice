@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.ict.domain.BoardAttachVO;
 import com.ict.domain.BoardVO;
 import com.ict.domain.Criteria;
 import com.ict.domain.SearchCriteria;
@@ -23,5 +24,7 @@ public interface BoardService {
 	public void delete(long bno);
 
 	public void update(BoardVO vo);
+	
+	public List<BoardAttachVO> getAttachList(Long bno);
 	
 }

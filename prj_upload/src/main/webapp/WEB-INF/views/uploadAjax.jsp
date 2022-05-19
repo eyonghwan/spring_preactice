@@ -113,7 +113,7 @@
 					
 					if(!obj.image) {
 						
-						let fileCallPath = encodingURIComponent (obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
+						let fileCallPath = encodeURIComponent (obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
 						
 						str += "<li data-path = '" + obj.uploadPath + "' data-uuid='" + obj.uuid
 							+ "' data-filename='" + obj.fileName + "' data-type='" + obj.fileType
