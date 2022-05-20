@@ -55,9 +55,14 @@
 	<!-- getter 맨 앞글자는 소문자 -->
 	
 	<insert id="insert">
+	
+		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
+			SELECT board_num.nextval from dual
+		</selectKey>
+	
 		INSERT INTO board_tbl (bno, title, content, writer)
 			VALUES
-		(board_num.nextval, #{title}, #{content}, #{writer})
+		(#{bno}, #{title}, #{content}, #{writer})
 	</insert>
 	
 	<select id="select" resultType="com.ict.domain.BoardVO">

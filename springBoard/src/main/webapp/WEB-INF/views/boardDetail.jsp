@@ -18,9 +18,11 @@
 	.uploadResult ul li {
 		list-style: none;
 		padding: 10px;
+		align-content: center;
+		text-align: center;
 	}
 	.uploadResult ul li img {
-		width: 20px;
+		width: 100px;
 	}
 	
 	#modDiv {

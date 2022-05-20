@@ -190,10 +190,10 @@
 						+ "<input type='hidden' name='attachList[" + i + "].uploadPath'"
 						+ " value='" + jobj.data("path") + "'>"
 						+ "<input type='hidden' name='attachList[" + i + "].fileType'"
-						+ " value='" + jobj.data("type") + "'>"
+						+ " value='" + jobj.data("type") + "'>";
 						
 				});
-				
+				formObj.append(str).submit();
 			});
 			
 		});// document
